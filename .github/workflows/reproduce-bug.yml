@@ -1,0 +1,29 @@
+on: [ push ]
+jobs:
+  reproduce-bug:
+    name: 'Reproduce for Java ${{ matrix.java-version }}'
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '${{ matrix.java-version }}'
+
+      - name: Perform build
+        run: >-
+          ./mvnw clean package javadoc:javadoc
+              -B 
+              -T8C 
+              -U
+              --no-transfer-progress
+              '-Dstyle.color=always'
+              '-Dmaven.artifact.threads=100'
