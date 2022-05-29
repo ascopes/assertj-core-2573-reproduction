@@ -20,11 +20,4 @@ jobs:
           java-version: '${{ matrix.java-version }}'
 
       - name: Perform build
-        run: >-
-          ./mvnw clean package javadoc:javadoc
-              -B 
-              -T8C 
-              -U
-              --no-transfer-progress
-              '-Dstyle.color=always'
-              '-Dmaven.artifact.threads=100'
+        run: ./mvnw -B -T8C -U clean package javadoc:javadoc --no-transfer-progress
